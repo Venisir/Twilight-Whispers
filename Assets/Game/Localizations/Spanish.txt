@@ -1,0 +1,2 @@
+_TIME_TO_DAY = Tiempo para dia
+_TIME_TO_NIGHT = Tiempo para noche
