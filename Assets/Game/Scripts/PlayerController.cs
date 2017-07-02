@@ -12,8 +12,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float _hp = 100.0f;
 
-    [SerializeField]
-    private Slider _hpBar;
+    //[SerializeField]
+    //private Slider _hpBar;
 
     [SerializeField]
     private float _attackDelay = 0.5f;
@@ -26,12 +26,14 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     private GameObject m_spell;
-    
+
     [SerializeField]
     private Animation _animation;
-    
+
     [NonSerialized]
     private GameData.PlayerStates _state;
+
+    private bool _asdwMovement = true;
 
     private float _currentAttackDelay;
     private Rigidbody _rigibody;
@@ -62,51 +64,65 @@ public class PlayerController : MonoBehaviour
             this.transform.LookAt(new Vector3(m_HitInfo.point.x, this.transform.position.y, m_HitInfo.point.z));
         }
 
-        if(!_animation.isPlaying)
+        if (!_animation.isPlaying)
         {
             _state = GameData.PlayerStates.Idle;
             _animation.CrossFade("Idle");
         }
 
-
         _currentAttackDelay -= Time.deltaTime;
 
         if (Input.GetMouseButton(1) && _state != GameData.PlayerStates.Attacking)
         {
-            //if (_currentAttackDelay <= 0.0f)
-            //{
-                _audioSource.Play();
-                //_currentAttackDelay = _attackDelay;
+            _audioSource.Play();
+            _animation.CrossFade("Staff Swing");
 
-                _animation.CrossFade("Staff Swing");
-
-                _state = GameData.PlayerStates.Attacking;
-                StartCoroutine(Shoot());
-            //}
+            _state = GameData.PlayerStates.Attacking;
+            StartCoroutine(Shoot());
         }
     }
 
     void FixedUpdate()
     {
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
-
-        if (moveHorizontal != 0 || moveVertical != 0)
+        if (_asdwMovement == true)
         {
-            Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+            // Movimiento 1 (ASDW)
+            float moveHorizontal = Input.GetAxis("Horizontal");
+            float moveVertical = Input.GetAxis("Vertical");
 
-            if (_state == GameData.PlayerStates.Walking || _state == GameData.PlayerStates.Idle)
+            if (moveHorizontal != 0 || moveVertical != 0)
             {
-                _rigibody.AddForce(movement.normalized * _speed);
-                if (!_animation.IsPlaying("Run"))
-                    _animation.CrossFade("Run");
+                Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+
+                if (_state == GameData.PlayerStates.Walking || _state == GameData.PlayerStates.Idle)
+                {
+                    _rigibody.AddForce(movement.normalized * _speed);
+                    if (!_animation.IsPlaying("Run"))
+                        _animation.CrossFade("Run");
+                }
+            }
+            else
+            {
+                if (_state != GameData.PlayerStates.Attacking)
+                    if (!_animation.IsPlaying("Idle"))
+                        _animation.CrossFade("Idle");
             }
         }
         else
         {
-            if(_state != GameData.PlayerStates.Attacking)
-                if (!_animation.IsPlaying("Idle"))
-                    _animation.CrossFade("Idle");
+            //Movimiento 2 (click a posición)
+            if (Input.GetMouseButton(0) && _state != GameData.PlayerStates.Attacking)
+            {
+                _rigibody.AddForce(transform.forward * _speed);
+                if (!_animation.IsPlaying("Run"))
+                    _animation.CrossFade("Run");
+            }
+            else
+            {
+                if (_state != GameData.PlayerStates.Attacking)
+                    if (!_animation.IsPlaying("Idle"))
+                        _animation.CrossFade("Idle");
+            }
         }
     }
 
@@ -116,7 +132,7 @@ public class PlayerController : MonoBehaviour
 
         //GameObject spellGO = Instantiate(m_spell) as GameObject;
         GameObject spellGO = PoolManager.Spawn(m_spell);
-        
+
         Spell spell = spellGO.GetComponent<Spell>();
 
         spell.SetSpeed(_bulletSpeed);
@@ -124,11 +140,16 @@ public class PlayerController : MonoBehaviour
         spell.SetDirection(this.transform.forward);
 
         spellGO.transform.localPosition = this.transform.position + Vector3.forward;
-        //spellGO.transform.LookAt(Vector3.back);
     }
 
     public GameData.PlayerStates GetState()
     {
         return _state;
     }
+
+    public void SwitchASDWMovement()
+    {
+        _asdwMovement = !_asdwMovement;
+    }
+
 }

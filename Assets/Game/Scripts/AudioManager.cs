@@ -25,7 +25,7 @@ public class AudioManager : Singleton<AudioManager>
     
     void Start()
     {
-        if(_enabled)
+        if(_enabled && !_audioSource.isPlaying)
             EnableGameMusic();
     }
    

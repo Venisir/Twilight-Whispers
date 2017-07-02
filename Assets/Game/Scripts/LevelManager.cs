@@ -71,60 +71,14 @@ public class LevelManager : Singleton<LevelManager>
 
     private void Update()
     {
-        if (Input.GetKeyUp(KeyCode.A))
-        {
-            //SwitchPlayers();
-        }
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray.origin, ray.direction, out m_HitInfo))
-            {
-                MyTile tile = m_HitInfo.transform.GetComponent<MyTile>();
-                if (tile != null && !tile.Occuped())
-                {
-                    tile.CreateTower(GameData.Towers.Bullets);
-                    //grid.FindNeighbours(tile);
-                }
-            }
-        }
-        if (Input.GetMouseButtonDown(2))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray.origin, ray.direction, out m_HitInfo))
-            {
-                MyTile tile = m_HitInfo.transform.GetComponent<MyTile>();
-                if (tile != null && !tile.Occuped())
-                {
-                    tile.CreateTower(GameData.Towers.Lasers);
-                    //grid.FindNeighbours(tile);
-                }
-            }
-        }
-        //if (Input.GetMouseButtonDown(2))
-        //{
-        //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //    if (Physics.Raycast(ray.origin, ray.direction, out m_HitInfo))
-        //    {
-        //        MyTile tile = m_HitInfo.transform.GetComponent<MyTile>();
-        //        if (tile != null && !tile.Occuped())
-        //        {
-        //            tile.CreatePortal();
-        //            //grid.FindNeighbours(tile);
-        //        }
-        //    }
-        //}
-
         _timer -= Time.deltaTime;
 
         if (_timer <= 0f)
         {
             // Fin del día o noche
-
             if (_day)
             {
-                
+
             }
 
             if (!_day)
@@ -148,10 +102,12 @@ public class LevelManager : Singleton<LevelManager>
             {
                 StartCoroutine(SpawnPortals());
                 //TowerTime
+                UIController.Instance.SetButtons(true);
             }
 
             if (!_day)
             {
+                UIController.Instance.SetButtons(false);
                 SpawnEnemies(true);
                 //Fight
             }
@@ -223,8 +179,6 @@ public class LevelManager : Singleton<LevelManager>
 
     public void KillPortals()
     {
-        //GameObject[] portals = GameObject.FindGameObjectsWithTag("Portal");
-
         foreach (Portal portal in _portals)
         {
             portal.DestroyPortal();
@@ -242,12 +196,6 @@ public class LevelManager : Singleton<LevelManager>
     {
         _portals.Remove(p);
     }
-
-    //public void SwitchPlayers()
-    //{
-    //    player1.SwitchPlayerId();
-    //    player2.SwitchPlayerId();
-    //}
 
     public Material GetMaterial(string color)
     {
@@ -268,5 +216,10 @@ public class LevelManager : Singleton<LevelManager>
             //Game Over
             UIController.Instance.SetScore(LocalizationManager.Instance.GetText("_YOU_LOSE"));
         }
-    }    
+    }
+
+    public int GetPortalsToLose()
+    {
+        return _portalsToLose;
+    }
 }

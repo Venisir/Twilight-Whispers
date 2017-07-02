@@ -14,9 +14,12 @@ public class UIController : Singleton<UIController>
     [SerializeField]
     private Text _score;
 
+    [SerializeField]
+    private List<SpawnButton> _towerButtons;
+
     private void Start()
     {
-        StartCoroutine(ShowTutorial());    
+        StartCoroutine(ShowTutorial());
     }
 
     void Update()
@@ -32,13 +35,19 @@ public class UIController : Singleton<UIController>
         _score.text = LocalizationManager.Instance.GetText("_FALLEN_PORTALS") + ": " + score;
     }
 
+    public void SetButtons(bool b)
+    {
+        foreach (SpawnButton sb in _towerButtons)
+            sb.SetEnabled(b);
+    }
+
     private IEnumerator ShowTutorial()
     {
         _tutorial.gameObject.SetActive(true);
         _tutorial.text = LocalizationManager.Instance.GetText("_TUTORIAL_1");
 
         yield return new WaitForSeconds(6);
-        _tutorial.text = LocalizationManager.Instance.GetText("_TUTORIAL_2");
+        _tutorial.text = string.Format(LocalizationManager.Instance.GetText("_TUTORIAL_2"), LevelManager.Instance.GetPortalsToLose());
 
         yield return new WaitForSeconds(6);
         _tutorial.gameObject.SetActive(false);
