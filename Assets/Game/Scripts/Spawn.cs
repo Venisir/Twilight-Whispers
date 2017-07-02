@@ -42,14 +42,13 @@ public class Spawn : MonoBehaviour
 
     IEnumerator SpawnAfterWait(float s)
     {
+        AudioManager.Instance.PlaySFX("spawn");
+
         yield return new WaitForSeconds(s);
-
+        
         GameObject enemyGO = Instantiate(_spawnItems[0]) as GameObject;
-
         Enemy enemy = enemyGO.GetComponent<Enemy>();
-
-        //LevelManager.Instance.AddEnemy(enemy);
-
+        
         enemy.transform.localPosition = _spawnPoint.position;
         enemy.ChooseBestDestination();
     }

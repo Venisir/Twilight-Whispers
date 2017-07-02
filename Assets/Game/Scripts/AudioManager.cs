@@ -1,30 +1,34 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class AudioManager : Singleton<AudioManager>
 {
     [SerializeField]
+    private bool _enabled;
+
+    [SerializeField]
     private AudioClip _menu;
 
     [SerializeField]
     private AudioClip _game;
-    
+
+    [SerializeField]
+    private List<AudioClip> _levelSfxs;
+
+    [SerializeField]
     private AudioSource _audioSource;
 
-    // Use this for initialization
+    [SerializeField]
+    private AudioSource _sfxSource;
+    
     void Start()
     {
-        _audioSource = this.GetComponent<AudioSource>();
-        EnableGameMusic();
+        if(_enabled)
+            EnableGameMusic();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
+   
     public void EnableGameMusic()
     {
         _audioSource.Stop();
@@ -37,5 +41,19 @@ public class AudioManager : Singleton<AudioManager>
         _audioSource.Stop();
         _audioSource.clip = _menu;
         _audioSource.Play();
+    }
+
+    public void PlaySFX(string name)
+    {
+        if (_sfxSource.isPlaying)
+            return;
+
+        AudioClip file = _levelSfxs.Where(x => x.name == name).SingleOrDefault();
+
+        if (file != null)
+        {
+            _sfxSource.clip = file;
+            _sfxSource.Play();
+        }
     }
 }

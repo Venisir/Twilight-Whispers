@@ -33,8 +33,9 @@ public class PlayerController : MonoBehaviour
     [NonSerialized]
     private GameData.PlayerStates _state;
 
-    private float _currentAttackDelay;   
-    private Rigidbody rb;
+    private float _currentAttackDelay;
+    private Rigidbody _rigibody;
+    private AudioSource _audioSource;
     private RaycastHit m_HitInfo = new RaycastHit();
 
     void Awake()
@@ -47,7 +48,8 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        _rigibody = GetComponent<Rigidbody>();
+        _audioSource = GetComponent<AudioSource>();
         _state = GameData.PlayerStates.Idle;
         _animation.CrossFade("Idle");
     }
@@ -73,7 +75,7 @@ public class PlayerController : MonoBehaviour
         {
             //if (_currentAttackDelay <= 0.0f)
             //{
-                Debug.Log("Disparando");
+                _audioSource.Play();
                 //_currentAttackDelay = _attackDelay;
 
                 _animation.CrossFade("Staff Swing");
@@ -95,7 +97,7 @@ public class PlayerController : MonoBehaviour
 
             if (_state == GameData.PlayerStates.Walking || _state == GameData.PlayerStates.Idle)
             {
-                rb.AddForce(movement.normalized * _speed);
+                _rigibody.AddForce(movement.normalized * _speed);
                 if (!_animation.IsPlaying("Run"))
                     _animation.CrossFade("Run");
             }

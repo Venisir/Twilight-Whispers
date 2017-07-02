@@ -10,15 +10,11 @@ public class Spell : MonoBehaviour
     [SerializeField]
     private ParticleSystem _particles;
 
-    private float _speed = 1.0f;
-    private float _damage = 1.0f;
+    private float _speed = 2.0f;
+    private float _damage = 100.0f;
     private bool dying = false;
     private Vector3 _direction = Vector3.zero;
-
-    void Start()
-    {
-    }
-
+    
     void Update()
     {
         _duration -= Time.deltaTime;
@@ -38,22 +34,14 @@ public class Spell : MonoBehaviour
 
             foreach (ParticleSystem ps in _particles.GetComponentsInChildren<ParticleSystem>())
                 ps.enableEmission = false;
-
-            //_particles.transform.parent = null; // detach particle system
-            //_particles.transform.localScale = Vector3.one; // detach particle system
-            //Destroy(_particles.gameObject, _particles.duration);
+            
             Destroy(this.gameObject, 2.5f);
-
-            // Damage
-            //_objective.Damage(_damage);
         }
     }
 
     public void SetDirection(Vector3 direction)
     {
         _direction = direction;
-        //_objective = objective;
-        //_objectivePosition = new Vector3(objective.transform.position.x, objective.transform.position.y, objective.transform.position.z);
     }
 
     public void SetSpeed(float s)
@@ -64,5 +52,19 @@ public class Spell : MonoBehaviour
     public void SetDamage(float d)
     {
         _damage = d;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Enemy")
+        {
+            other.GetComponent<Enemy>().Damage(_damage);
+
+            _particles.transform.parent = null;
+            _particles.transform.localScale = Vector3.one;
+            Destroy(_particles.gameObject, _particles.duration);
+
+            Destroy(this.gameObject);
+        }
     }
 }

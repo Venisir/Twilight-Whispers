@@ -35,12 +35,14 @@ public class Tower : MonoBehaviour
     private GameData.Towers _type;
 
     private List<Enemy> _enemies;
+    private AudioSource _audioSource;
     private float _currentAttackDelay;
 
     // Use this for initialization
     void Start()
     {
         _enemies = new List<Enemy>();
+        _audioSource = GetComponent<AudioSource>();
         _currentAttackDelay = _attackDelay;
 
         m_radiusZone.SetRadius(_radius);
@@ -80,6 +82,7 @@ public class Tower : MonoBehaviour
         {
             case (GameData.Towers.Bullets):
 
+                _audioSource.Play();
                 GameObject bulletGO = Instantiate(m_bullet) as GameObject;
 
                 Bullet bullet = bulletGO.GetComponent<Bullet>();
@@ -94,6 +97,7 @@ public class Tower : MonoBehaviour
 
             case (GameData.Towers.Lasers):
 
+                _audioSource.Play();
                 m_laser.transform.LookAt(_enemies[0].gameObject.transform.position, Vector3.back);
                 m_laser.Play();
                 m_laser.loop = false;
