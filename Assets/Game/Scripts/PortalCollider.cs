@@ -24,6 +24,8 @@ public class PortalCollider : MonoBehaviour
             other.GetComponent<Enemy>().Scape();
 
             LevelManager.Instance.RemovePortal(parent);
+            LevelManager.Instance.DecrementPortalScore();
+            
             parent.DestroyPortal();
         }
     }

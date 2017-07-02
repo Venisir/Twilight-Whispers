@@ -83,7 +83,8 @@ public class Tower : MonoBehaviour
             case (GameData.Towers.Bullets):
 
                 _audioSource.Play();
-                GameObject bulletGO = Instantiate(m_bullet) as GameObject;
+                //GameObject bulletGO = Instantiate(m_bullet) as GameObject;
+                GameObject bulletGO = PoolManager.Spawn(m_bullet);
 
                 Bullet bullet = bulletGO.GetComponent<Bullet>();
 

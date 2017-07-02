@@ -61,7 +61,7 @@ public class MyGrid : MonoBehaviour
         float x = startPos.x + gridPos.x * hexWidth + offset;
         float z = startPos.z - gridPos.y * hexHeight * 0.75f;
 
-        return new Vector3(x, 0, z);
+        return new Vector3(x, transform.position.y, z);
     }
 
     private void CreateGrid()

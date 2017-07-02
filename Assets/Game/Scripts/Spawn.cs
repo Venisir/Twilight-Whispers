@@ -45,8 +45,10 @@ public class Spawn : MonoBehaviour
         AudioManager.Instance.PlaySFX("spawn");
 
         yield return new WaitForSeconds(s);
-        
-        GameObject enemyGO = Instantiate(_spawnItems[0]) as GameObject;
+
+        //GameObject enemyGO = Instantiate(_spawnItems[0]) as GameObject;
+        GameObject enemyGO = PoolManager.Spawn(_spawnItems[0]);
+
         Enemy enemy = enemyGO.GetComponent<Enemy>();
         
         enemy.transform.localPosition = _spawnPoint.position;

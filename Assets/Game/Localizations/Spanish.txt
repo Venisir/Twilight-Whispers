@@ -1,2 +1,5 @@
 _TIME_TO_DAY = Tiempo para dia
 _TIME_TO_NIGHT = Tiempo para noche
+_FALLEN_PORTALS = Portales restantes
+_TUTORIAL_1 = ¡Defiende tus <color=#4f92ff>portales</color>! Coloca torres durante el dia con los botones derecho e izquierdo del <color=#4f92ff>raton</color>.
+_TUTORIAL_2 = Ataca por las noches con el boton derecho del <color=#4f92ff>raton</color>. No dejes que los seres de la noche alcancen <color=#4f92ff>5</color> portales!

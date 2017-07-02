@@ -101,8 +101,6 @@ public class PlayerController : MonoBehaviour
                 if (!_animation.IsPlaying("Run"))
                     _animation.CrossFade("Run");
             }
-
-            Debug.Log(Input.GetAxis("Horizontal") + "   " + Input.GetAxis("Vertical") + " - Force: " + (movement.normalized * _speed));
         }
         else
         {
@@ -116,8 +114,9 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
 
-        GameObject spellGO = Instantiate(m_spell) as GameObject;
-
+        //GameObject spellGO = Instantiate(m_spell) as GameObject;
+        GameObject spellGO = PoolManager.Spawn(m_spell);
+        
         Spell spell = spellGO.GetComponent<Spell>();
 
         spell.SetSpeed(_bulletSpeed);

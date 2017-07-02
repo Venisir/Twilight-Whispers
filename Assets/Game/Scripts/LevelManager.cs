@@ -7,16 +7,15 @@ using UnityStandardAssets.Characters.ThirdPerson;
 public class LevelManager : Singleton<LevelManager>
 {
     [SerializeField]
-    ThirdPersonUserControl player1;
+    private PlayerController player1;
 
+    //TODO
     [SerializeField]
-    ThirdPersonUserControl player2;
+    private List<string> _colorsNames;
 
+    //TODO
     [SerializeField]
-    List<string> _colorsNames;
-
-    [SerializeField]
-    List<Material> _colorsMaterials;
+    private List<Material> _colorsMaterials;
 
     [SerializeField]
     private Light _sun;
@@ -32,6 +31,11 @@ public class LevelManager : Singleton<LevelManager>
 
     [SerializeField]
     private List<Portal> _portals;
+
+    [SerializeField]
+    private int _portalsToLose;
+
+    private int _dayScore, _nightScore;
 
     private RaycastHit m_HitInfo = new RaycastHit();
     private Dictionary<string, Material> colorMaterials;
@@ -58,6 +62,11 @@ public class LevelManager : Singleton<LevelManager>
     {
         _day = false;
         _timer = 0.0f;
+
+        _dayScore = 0;
+        _nightScore = 0;
+
+        UIController.Instance.SetScore(_portalsToLose.ToString());
     }
 
     private void Update()
@@ -115,38 +124,39 @@ public class LevelManager : Singleton<LevelManager>
 
             if (_day)
             {
-                Debug.Log("Fin del día");
-
+                
             }
 
             if (!_day)
             {
-                Debug.Log("Fin de la noche");
                 SpawnEnemies(false);
                 KillEnemies();
                 KillPortals();
             }
 
+            // Aumentamos las puntuaciones
+            if (_day)
+                _dayScore++;
+            else
+                _nightScore++;
+
             // Comienzo del nuevo timer
             _day = !_day;
             _timer = _day ? _dayTime : _nightTime;
 
-
             if (_day)
             {
-                Debug.Log("Comienzo del dia");
                 StartCoroutine(SpawnPortals());
                 //TowerTime
             }
 
             if (!_day)
             {
-                Debug.Log("Comienzo de la noche");
                 SpawnEnemies(true);
                 //Fight
             }
         }
-        
+
 
         // 0 -> min value (TODO?)
 
@@ -205,7 +215,7 @@ public class LevelManager : Singleton<LevelManager>
                 tile = grid.GetTileAt(new Vector2(x, y));
 
             } while (tile == null || tile.Occuped());
-            
+
             tile.CreatePortal();
             yield return Utils.WaitForRealSeconds(1.0f);
         }
@@ -246,5 +256,17 @@ public class LevelManager : Singleton<LevelManager>
         return m;
     }
 
+    public void DecrementPortalScore()
+    {
+        _portalsToLose--;
 
+        UIController.Instance.SetScore(_portalsToLose.ToString());
+
+        if (_portalsToLose <= 0)
+        {
+            //TODO
+            //Game Over
+            UIController.Instance.SetScore(LocalizationManager.Instance.GetText("_YOU_LOSE"));
+        }
+    }    
 }
