@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityStandardAssets.Characters.ThirdPerson;
 
 public class LevelManager : Singleton<LevelManager>
@@ -71,6 +72,11 @@ public class LevelManager : Singleton<LevelManager>
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene("Menu");
+        }
+
         _timer -= Time.deltaTime;
 
         if (_timer <= 0f)
