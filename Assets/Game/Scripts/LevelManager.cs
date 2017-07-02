@@ -64,7 +64,7 @@ public class LevelManager : Singleton<LevelManager>
     {
         if (Input.GetKeyUp(KeyCode.A))
         {
-            SwitchPlayers();
+            //SwitchPlayers();
         }
 
         if (Input.GetMouseButtonDown(0))
@@ -233,11 +233,11 @@ public class LevelManager : Singleton<LevelManager>
         _portals.Remove(p);
     }
 
-    public void SwitchPlayers()
-    {
-        player1.SwitchPlayerId();
-        player2.SwitchPlayerId();
-    }
+    //public void SwitchPlayers()
+    //{
+    //    player1.SwitchPlayerId();
+    //    player2.SwitchPlayerId();
+    //}
 
     public Material GetMaterial(string color)
     {
