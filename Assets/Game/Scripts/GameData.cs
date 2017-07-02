@@ -42,4 +42,12 @@ public class GameData
         Dying,
         Scaping
     }
+
+    public enum PlayerStates
+    {
+        Idle,
+        Walking,
+        Dying,
+        Attacking
+    }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,10 +25,19 @@ public class PlayerController : MonoBehaviour
     private float _bulletDamage = 7f;
 
     [SerializeField]
-    private GameObject m_bullet;
+    private GameObject m_spell;
 
     [SerializeField]
     private ParticleSystem m_laser;
+
+    [SerializeField]
+    private Animation _animation;
+
+    [SerializeField]
+    private Animator _animator;
+
+    [NonSerialized]
+    private GameData.PlayerStates _state;
 
     private float _currentAttackDelay;   
     private Rigidbody rb;
@@ -44,6 +54,8 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        _state = GameData.PlayerStates.Idle;
+        _animation.CrossFade("Idle");
     }
 
     void Update()
@@ -54,26 +66,27 @@ public class PlayerController : MonoBehaviour
             this.transform.LookAt(new Vector3(m_HitInfo.point.x, this.transform.position.y, m_HitInfo.point.z));
         }
 
+        if(!_animation.isPlaying)
+        {
+            _state = GameData.PlayerStates.Idle;
+            _animation.CrossFade("Idle");
+        }
+
 
         _currentAttackDelay -= Time.deltaTime;
 
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButton(1) && _state != GameData.PlayerStates.Attacking)
         {
-            Debug.Log("Disparando");
+            //if (_currentAttackDelay <= 0.0f)
+            //{
+                Debug.Log("Disparando");
+                //_currentAttackDelay = _attackDelay;
 
-            if (_currentAttackDelay <= 0.0f)
-            {
-                //_enemies.RemoveAll(item => item == null);
-                //_enemies.RemoveAll(item => item.GetState() != GameData.EnemyStates.Walking);
-                //
-                //if (_enemies.Count > 0)
-                //{
-                //    Debug.Log("TowerAttack " + _enemies[0]);
-                //    _currentAttackDelay = _attackDelay;
-                //    Shoot();
-                //}
-            }
-            Shoot();
+                _animation.CrossFade("Staff Swing");
+
+                _state = GameData.PlayerStates.Attacking;
+                StartCoroutine(Shoot());
+            //}
         }
     }
 
@@ -82,26 +95,45 @@ public class PlayerController : MonoBehaviour
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
 
-        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
-        
-        rb.AddForce(movement.normalized * _speed);
+        if (moveHorizontal != 0 || moveVertical != 0)
+        {
+            Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
 
+            if (_state == GameData.PlayerStates.Walking || _state == GameData.PlayerStates.Idle)
+            {
+                rb.AddForce(movement.normalized * _speed);
+                if (!_animation.IsPlaying("Run"))
+                    _animation.CrossFade("Run");
+            }
 
-        Debug.Log(Input.GetAxis("Horizontal") + "   " + Input.GetAxis("Vertical") + " - Force: " + (movement.normalized * _speed));
+            Debug.Log(Input.GetAxis("Horizontal") + "   " + Input.GetAxis("Vertical") + " - Force: " + (movement.normalized * _speed));
+        }
+        else
+        {
+            if(_state != GameData.PlayerStates.Attacking)
+                if (!_animation.IsPlaying("Idle"))
+                    _animation.CrossFade("Idle");
+        }
     }
 
-    private void Shoot()
+    private IEnumerator Shoot()
     {
-        GameObject spellGO = Instantiate(m_bullet) as GameObject;
+        yield return new WaitForSeconds(0.5f);
+
+        GameObject spellGO = Instantiate(m_spell) as GameObject;
 
         Spell spell = spellGO.GetComponent<Spell>();
 
         spell.SetSpeed(_bulletSpeed);
         spell.SetDamage(_bulletDamage);
-        //spell.SetDirection(this.transform - Input.Mo);
+        spell.SetDirection(this.transform.forward);
 
         spellGO.transform.localPosition = this.transform.position + Vector3.forward;
+        //spellGO.transform.LookAt(Vector3.back);
+    }
 
-        //m_laser.transform.LookAt(_enemies[0].gameObject.transform.position, Vector3.back);
+    public GameData.PlayerStates GetState()
+    {
+        return _state;
     }
 }

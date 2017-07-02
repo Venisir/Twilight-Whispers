@@ -80,7 +80,7 @@ public class LevelManager : Singleton<LevelManager>
                 }
             }
         }
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(2))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray.origin, ray.direction, out m_HitInfo))
@@ -93,19 +93,19 @@ public class LevelManager : Singleton<LevelManager>
                 }
             }
         }
-        if (Input.GetMouseButtonDown(2))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray.origin, ray.direction, out m_HitInfo))
-            {
-                MyTile tile = m_HitInfo.transform.GetComponent<MyTile>();
-                if (tile != null && !tile.Occuped())
-                {
-                    tile.CreatePortal();
-                    //grid.FindNeighbours(tile);
-                }
-            }
-        }
+        //if (Input.GetMouseButtonDown(2))
+        //{
+        //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //    if (Physics.Raycast(ray.origin, ray.direction, out m_HitInfo))
+        //    {
+        //        MyTile tile = m_HitInfo.transform.GetComponent<MyTile>();
+        //        if (tile != null && !tile.Occuped())
+        //        {
+        //            tile.CreatePortal();
+        //            //grid.FindNeighbours(tile);
+        //        }
+        //    }
+        //}
 
         _timer -= Time.deltaTime;
 
