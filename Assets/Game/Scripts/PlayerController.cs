@@ -26,16 +26,10 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     private GameObject m_spell;
-
-    [SerializeField]
-    private ParticleSystem m_laser;
-
+    
     [SerializeField]
     private Animation _animation;
-
-    [SerializeField]
-    private Animator _animator;
-
+    
     [NonSerialized]
     private GameData.PlayerStates _state;
 
