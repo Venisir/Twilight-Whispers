@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityStandardAssets.Characters.ThirdPerson;
 
 public class LevelManager : Singleton<LevelManager>
 {
@@ -29,19 +28,20 @@ public class LevelManager : Singleton<LevelManager>
 
     [SerializeField]
     private MyGrid grid;
-
-    [SerializeField]
-    private List<Portal> _portals;
-
+    
     [SerializeField]
     private int _portalsToLose;
 
+    private List<Portal> _portals;
+
     private int _dayScore, _nightScore;
+    private bool init;
 
     private RaycastHit m_HitInfo = new RaycastHit();
     private Dictionary<string, Material> colorMaterials;
     private float _timer;
     private bool _day;
+    //TODO
     private int _difficulty = 4;
 
     public override void Awake()
@@ -61,8 +61,11 @@ public class LevelManager : Singleton<LevelManager>
 
     private void Start()
     {
-        _day = false;
-        _timer = 0.0f;
+        _portals = new List<Portal>();
+
+        _day = true;
+        _timer = _dayTime;
+        //_timer = 0.0f;
 
         _dayScore = 0;
         _nightScore = 0;
@@ -72,6 +75,15 @@ public class LevelManager : Singleton<LevelManager>
 
     private void Update()
     {
+        if (!init)
+        {
+            StartCoroutine(SpawnPortals());
+            UIController.Instance.SetButtons(true);
+
+            init = true;
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             SceneManager.LoadScene("Menu");

@@ -40,14 +40,13 @@ public class Spawn : MonoBehaviour
         }
     }
 
-    IEnumerator SpawnAfterWait(float s)
+    private IEnumerator SpawnAfterWait(float s)
     {
         AudioManager.Instance.PlaySFX("spawn");
 
         yield return new WaitForSeconds(s);
-
-        //GameObject enemyGO = Instantiate(_spawnItems[0]) as GameObject;
-        GameObject enemyGO = PoolManager.Spawn(_spawnItems[0]);
+        
+        GameObject enemyGO = PoolManager.Spawn(_spawnItems[Random.Range(0, _spawnItems.Count)]);
 
         Enemy enemy = enemyGO.GetComponent<Enemy>();
         

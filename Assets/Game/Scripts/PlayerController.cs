@@ -11,10 +11,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     private float _hp = 100.0f;
-
-    //[SerializeField]
-    //private Slider _hpBar;
-
+    
     [SerializeField]
     private float _attackDelay = 0.5f;
 
@@ -30,10 +27,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Animation _animation;
 
+    [SerializeField]
+    private bool _asdwMovement;
+
     [NonSerialized]
     private GameData.PlayerStates _state;
-
-    private bool _asdwMovement = true;
 
     private float _currentAttackDelay;
     private Rigidbody _rigibody;
@@ -42,9 +40,6 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-        //_hpBar.maxValue = _hp;
-        //_hpBar.value = _hp;
-
         _currentAttackDelay = _attackDelay;
     }
 
@@ -129,8 +124,7 @@ public class PlayerController : MonoBehaviour
     private IEnumerator Shoot()
     {
         yield return new WaitForSeconds(0.5f);
-
-        //GameObject spellGO = Instantiate(m_spell) as GameObject;
+        
         GameObject spellGO = PoolManager.Spawn(m_spell);
 
         Spell spell = spellGO.GetComponent<Spell>();
@@ -151,5 +145,4 @@ public class PlayerController : MonoBehaviour
     {
         _asdwMovement = !_asdwMovement;
     }
-
 }
