@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class InvisibleTower : MonoBehaviour
 {
@@ -27,16 +25,8 @@ public class InvisibleTower : MonoBehaviour
                 {
                     if (!tile.Occuped())
                     {
-                        switch (_type)
-                        {
-                            case GameData.Towers.Bullets:
-                                tile.CreateTower(GameData.Towers.Bullets);
-                                break;
-
-                            case GameData.Towers.Lasers:
-                                tile.CreateTower(GameData.Towers.Lasers);
-                                break;
-                        }
+                        tile.CreateTower(TowerManager.Instance.GetTower(_type));
+                        
                         Destroy(this.gameObject);
                     }
                 }

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class Tower : MonoBehaviour
@@ -80,7 +79,18 @@ public class Tower : MonoBehaviour
     {
         switch (_type)
         {
-            case (GameData.Towers.Bullets):
+            case (GameData.Towers.Laser):
+
+                _audioSource.Play();
+                m_laser.transform.LookAt(_enemies[0].gameObject.transform.position, Vector3.back);
+                m_laser.Play();
+                m_laser.loop = false;
+                
+                _enemies[0].Damage(_laserDamage);
+
+                break;
+
+            default:
 
                 _audioSource.Play();
                 //GameObject bulletGO = Instantiate(m_bullet) as GameObject;
@@ -93,18 +103,6 @@ public class Tower : MonoBehaviour
                 bullet.SetObjective(_enemies[0]);
 
                 bulletGO.transform.localPosition = m_light.transform.position;
-
-                break;
-
-            case (GameData.Towers.Lasers):
-
-                _audioSource.Play();
-                m_laser.transform.LookAt(_enemies[0].gameObject.transform.position, Vector3.back);
-                m_laser.Play();
-                m_laser.loop = false;
-
-
-                _enemies[0].Damage(_laserDamage);
 
                 break;
         }

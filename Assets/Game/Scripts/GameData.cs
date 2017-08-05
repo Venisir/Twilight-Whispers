@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class GameData
+﻿public class GameData
 {
     public enum Languages
     {
@@ -32,8 +28,9 @@ public class GameData
 
     public enum Towers
     {
-        Bullets,
-        Lasers
+        Magic,
+        Laser,
+        Fire
     }
 
     public enum EnemyStates

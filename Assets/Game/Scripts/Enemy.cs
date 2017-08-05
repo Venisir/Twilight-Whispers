@@ -89,7 +89,7 @@ public class Enemy : MonoBehaviour
 
     public IEnumerator RecalculateDestination()
     {
-        _animator.Play("Idle");
+        _animator.Play(GameConstants.ANIM_IDLE);
         _thinkingGO.SetActive(true);
 
         m_Agent.enabled = false;
@@ -134,7 +134,7 @@ public class Enemy : MonoBehaviour
         if (m_Agent != null)
         {
             m_Agent.destination = v;
-            _animator.Play("Walk");
+            _animator.Play(GameConstants.ANIM_WALK);
         }
     }
 
@@ -151,14 +151,14 @@ public class Enemy : MonoBehaviour
 
     public void Die()
     {
-        _animator.Play("Dead");
+        _animator.Play(GameConstants.ANIM_DEAD);
         _state = GameData.EnemyStates.Dying;
         DestroyStuff();
     }
 
     public void Scape()
     {
-        _animator.Play("Jump");
+        _animator.Play(GameConstants.ANIM_JUMP);
         _state = GameData.EnemyStates.Scaping;
         DestroyStuff();
     }

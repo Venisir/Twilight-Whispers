@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MyTile : MonoBehaviour
 {
@@ -13,28 +11,15 @@ public class MyTile : MonoBehaviour
     [SerializeField]
     private GameObject portalPrefab;
 
-    private Tower tower = null;
-    private Portal portal = null;
+    private Tower _tower = null;
+    private Portal _portal = null;
     public int y, x;
 
     void Start()
     {
-        /*
-        Mesh mesh = GetComponent<MeshFilter>().mesh;
-        Vector3[] vertices = mesh.vertices;
-        Vector2[] uvs = new Vector2[vertices.Length];
 
-        for (int i = 0; i < uvs.Length; i++)
-        {
-            uvs[i] = new Vector2(vertices[i].x, vertices[i].z);
-        }
-        mesh.uv = uvs;
-
-        mesh.RecalculateBounds();
-        mesh.RecalculateNormals();
-        */
     }
-    
+
     void Update()
     {
 
@@ -48,24 +33,16 @@ public class MyTile : MonoBehaviour
         return new Vector3(origin.x + radius * Mathf.Cos(angle), 0.5f, origin.z + radius * Mathf.Sin(angle));
     }
 
-    public void CreateTower(GameData.Towers type)
+    public void CreateTower(GameObject tower)
     {
         GameObject hex = null;
 
-        switch (type)
-        {
-            case GameData.Towers.Bullets:
-                hex = Instantiate(bulletTowerPrefab) as GameObject;
-                break;
-            case GameData.Towers.Lasers:
-                hex = Instantiate(laserTowerPrefab) as GameObject;
-                break;
-        }
+        hex = Instantiate(tower);
 
         hex.transform.parent = this.transform;
         hex.transform.localPosition = Vector3.zero;
 
-        tower = hex.GetComponent<Tower>();
+        _tower = tower.GetComponent<Tower>();
     }
 
     public void CreatePortal()
@@ -74,12 +51,12 @@ public class MyTile : MonoBehaviour
         hex.transform.parent = this.transform;
         hex.transform.localPosition = Vector3.zero;
 
-        portal = hex.GetComponent<Portal>();
-        LevelManager.Instance.AddPortal(portal);
+        _portal = hex.GetComponent<Portal>();
+        LevelManager.Instance.AddPortal(_portal);
     }
 
     public bool Occuped()
     {
-        return !(tower == null && portal == null);
+        return !(_tower == null && _portal == null);
     }
 }
