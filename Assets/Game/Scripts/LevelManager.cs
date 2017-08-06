@@ -70,7 +70,7 @@ public class LevelManager : Singleton<LevelManager>
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            SceneManager.LoadScene("Menu");
+            SceneManager.LoadScene("Menu", LoadSceneMode.Single);
         }
 
         _timer -= Time.deltaTime;
