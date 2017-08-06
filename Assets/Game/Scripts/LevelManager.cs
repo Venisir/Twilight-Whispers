@@ -240,6 +240,11 @@ public class LevelManager : Singleton<LevelManager>
             //Game Over
             //UIController.Instance.SetRemainingPortals(LocalizationManager.Instance.GetText("_YOU_LOSE"));
         }
+
+        if (_portals.Count == 0)
+        {
+            _timer = 0;
+        }
     }
 
     public int GetPortalsToLose()

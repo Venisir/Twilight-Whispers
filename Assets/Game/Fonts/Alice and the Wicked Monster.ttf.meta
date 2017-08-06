@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: fb93713b8b8f6d744a03555303686a47
+timeCreated: 1502023722
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Alice and the Wicked Monster
+  fontNames:
+  - Alice and the Wicked Monster
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
