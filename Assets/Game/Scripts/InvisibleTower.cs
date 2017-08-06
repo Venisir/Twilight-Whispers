@@ -25,6 +25,7 @@ public class InvisibleTower : MonoBehaviour
                 {
                     if (!tile.Occuped())
                     {
+                        UIController.Instance.SetPauseButtons(false);
                         tile.CreateTower(TowerManager.Instance.GetTower(_type));
                         
                         Destroy(this.gameObject);

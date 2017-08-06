@@ -12,7 +12,10 @@ public class UIController : Singleton<UIController>
     private Text _tutorial;
 
     [SerializeField]
-    private Text _score;
+    private Text _portalsToLose;
+
+    [SerializeField]
+    private Text _waves;
 
     [SerializeField]
     private List<SpawnButton> _towerButtons;
@@ -30,15 +33,26 @@ public class UIController : Singleton<UIController>
             _timer.text = LocalizationManager.Instance.GetText("_TIME_TO_DAY") + ": " + Utils.TimeFormattedStringFromSeconds(LevelManager.Instance.RemainingTime());
     }
 
-    public void SetScore(string score)
+    public void SetRemainingPortals(int score)
     {
-        _score.text = LocalizationManager.Instance.GetText("_FALLEN_PORTALS") + ": " + score;
+        _portalsToLose.text = score.ToString();
+    }
+
+    public void SetWaves(int score)
+    {
+        _waves.text = score.ToString();
     }
 
     public void SetButtons(bool b)
     {
         foreach (SpawnButton sb in _towerButtons)
             sb.SetEnabled(b);
+    }
+
+    public void SetPauseButtons(bool b)
+    {
+        foreach (SpawnButton sb in _towerButtons)
+            sb.SetPaused(b);
     }
 
     private IEnumerator ShowTutorial()

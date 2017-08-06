@@ -69,7 +69,8 @@ public class LevelManager : Singleton<LevelManager>
         _dayScore = 0;
         _nightScore = 0;
 
-        UIController.Instance.SetScore(_portalsToLose.ToString());
+        UIController.Instance.SetRemainingPortals(_portalsToLose);
+        UIController.Instance.SetWaves(0);
     }
 
     private void Update()
@@ -92,6 +93,12 @@ public class LevelManager : Singleton<LevelManager>
 
         if (_timer <= 0f)
         {
+            // Aumentamos las puntuaciones
+            if (_day)
+                _dayScore++;
+            else
+                _nightScore++;
+            
             // Fin del día o noche
             if (_day)
             {
@@ -103,13 +110,8 @@ public class LevelManager : Singleton<LevelManager>
                 SpawnEnemies(false);
                 KillEnemies();
                 KillPortals();
+                UIController.Instance.SetWaves(_nightScore);
             }
-
-            // Aumentamos las puntuaciones
-            if (_day)
-                _dayScore++;
-            else
-                _nightScore++;
 
             // Comienzo del nuevo timer
             _day = !_day;
@@ -225,13 +227,13 @@ public class LevelManager : Singleton<LevelManager>
     {
         _portalsToLose--;
 
-        UIController.Instance.SetScore(_portalsToLose.ToString());
+        UIController.Instance.SetRemainingPortals(_portalsToLose);
 
         if (_portalsToLose <= 0)
         {
             //TODO
             //Game Over
-            UIController.Instance.SetScore(LocalizationManager.Instance.GetText("_YOU_LOSE"));
+            //UIController.Instance.SetRemainingPortals(LocalizationManager.Instance.GetText("_YOU_LOSE"));
         }
     }
 

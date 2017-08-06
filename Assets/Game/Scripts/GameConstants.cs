@@ -7,5 +7,6 @@
     public const string ANIM_WALK = "Walk";
     public const string ANIM_JUMP = "Jump";
     public const string ANIM_RUN = "Run";
+    public const string ANIM_UNLIMITED_POWER = "Staff Spell Ground";
 
 }

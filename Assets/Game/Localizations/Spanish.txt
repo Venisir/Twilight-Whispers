@@ -1,5 +1,5 @@
-_TIME_TO_DAY = Tiempo para dia
-_TIME_TO_NIGHT = Tiempo para noche
+_TIME_TO_DAY = Dia en
+_TIME_TO_NIGHT = Noche en
 _FALLEN_PORTALS = Portales restantes
 _TUTORIAL_1 = ¡Defiende tus <color=#4f92ff>portales</color>! Coloca torres durante el dia desde el menu <color=#4f92ff>lateral</color>.
 _TUTORIAL_2 = Lanza hechizos con el boton derecho del <color=#4f92ff>raton</color>. ¡No dejes que los seres de la noche alcancen <color=#4f92ff>{0}</color> portales!

@@ -25,8 +25,15 @@ public class SpawnButton : MonoBehaviour
         }
     }
 
+    public void SetPaused(bool b)
+    {
+        if ((!b && !_locked.activeSelf) || b)
+            _button.interactable = !b;
+    }
+
     public void SpawnTower()
     {
+        UIController.Instance.SetPauseButtons(true);
         GameObject towerGO = PoolManager.Spawn("InvisibleTower");
         towerGO.GetComponent<InvisibleTower>().SetType(_towerType);
 
@@ -36,5 +43,6 @@ public class SpawnButton : MonoBehaviour
     private void CancelConstruction()
     {
         _spawning = false;
+        UIController.Instance.SetPauseButtons(false);
     }
 }

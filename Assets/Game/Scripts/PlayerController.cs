@@ -24,6 +24,9 @@ public class PlayerController : MonoBehaviour
     private GameObject m_spell;
 
     [SerializeField]
+    private GameObject _meteorPrefab;
+    
+    [SerializeField]
     private Animation _animation;
 
     [SerializeField]
@@ -49,23 +52,18 @@ public class PlayerController : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
         _state = GameData.PlayerStates.Idle;
         _animation.CrossFade(GameConstants.ANIM_IDLE);
+        _movementEnabled = true;
     }
 
     void Update()
     {
+        if (!_movementEnabled)
+            return;
+
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray.origin, ray.direction, out m_HitInfo))
         {
             this.transform.LookAt(new Vector3(m_HitInfo.point.x, this.transform.position.y, m_HitInfo.point.z));
-
-            if (_movementEnabled && m_HitInfo.collider.tag == "UI")
-            {
-                _movementEnabled = false;
-            }
-            else
-            {
-                _movementEnabled = true;
-            }
         }
 
         if (!_animation.isPlaying)
@@ -88,7 +86,7 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (EventSystem.current.IsPointerOverGameObject())
+        if (EventSystem.current.IsPointerOverGameObject() || !_movementEnabled)
             return;
 
         if (_asdwMovement == true)
@@ -146,6 +144,30 @@ public class PlayerController : MonoBehaviour
         spell.SetDirection(this.transform.forward);
 
         spellGO.transform.localPosition = this.transform.position + Vector3.forward;
+    }
+
+    public void PlayMeteorSwarm()
+    {
+        StartCoroutine(MeteorSwarm());
+    }
+
+    private IEnumerator MeteorSwarm()
+    {
+        _movementEnabled = false;
+        UIController.Instance.SetPauseButtons(true);
+
+        GameObject meteorGO = PoolManager.Spawn(_meteorPrefab);
+        Destroy(meteorGO, 10.0f);
+
+        _animation.CrossFade(GameConstants.ANIM_UNLIMITED_POWER);
+
+        while (_animation.IsPlaying(GameConstants.ANIM_UNLIMITED_POWER))
+        {
+            yield return null;
+        }
+
+        _movementEnabled = true;
+        UIController.Instance.SetPauseButtons(false);
     }
 
     public GameData.PlayerStates GetState()
