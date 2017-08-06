@@ -8,13 +8,8 @@ public class LevelManager : Singleton<LevelManager>
     [SerializeField]
     private PlayerController player1;
 
-    //TODO
     [SerializeField]
-    private List<string> _colorsNames;
-
-    //TODO
-    [SerializeField]
-    private List<Material> _colorsMaterials;
+    private MyGrid grid;
 
     [SerializeField]
     private Light _sun;
@@ -24,9 +19,6 @@ public class LevelManager : Singleton<LevelManager>
 
     [SerializeField]
     private float _nightTime;
-
-    [SerializeField]
-    private MyGrid grid;
     
     [SerializeField]
     private int _portalsToLose;
@@ -47,16 +39,6 @@ public class LevelManager : Singleton<LevelManager>
     public override void Awake()
     {
         base.Awake();
-
-        colorMaterials = new Dictionary<string, Material>();
-
-        if (_colorsNames.Count != _colorsMaterials.Count)
-            Debug.LogError("Error: discrepancias entre colores al inicializar");
-
-        for (int i = 0; i < _colorsNames.Count; i++)
-        {
-            colorMaterials.Add(_colorsNames[i], _colorsMaterials[i]);
-        }
     }
 
     private void Start()
@@ -65,8 +47,6 @@ public class LevelManager : Singleton<LevelManager>
 
         _day = true;
         _timer = _dayTime;
-        //_timer = 0.0f;
-
         _dayScore = 0;
         _nightScore = 0;
 
@@ -76,15 +56,6 @@ public class LevelManager : Singleton<LevelManager>
 
     private void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            //Game Over
-            _finished = true;
-            player1.Die();
-
-            UIController.Instance.GameOver();
-        }
-
         if (_finished)
             return;
 
@@ -144,10 +115,7 @@ public class LevelManager : Singleton<LevelManager>
                 //Fight
             }
         }
-
-
-        // 0 -> min value (TODO?)
-
+        
         if (_day)
             _sun.intensity = _timer / ((_day ? _dayTime : _nightTime) - 0);
         else
@@ -157,6 +125,11 @@ public class LevelManager : Singleton<LevelManager>
     public PlayerController GetPlayer()
     {
         return player1;
+    }
+
+    public MyGrid GetGrid()
+    {
+        return grid;
     }
 
     public bool IsDay()
@@ -174,56 +147,6 @@ public class LevelManager : Singleton<LevelManager>
         return _timer;
     }
 
-    public void SpawnEnemies(bool b)
-    {
-        GameObject[] spawns = GameObject.FindGameObjectsWithTag("Spawn");
-
-        foreach (GameObject spawn in spawns)
-        {
-            spawn.GetComponent<Spawn>().SetEnabled(b);
-        }
-    }
-
-    public void KillEnemies()
-    {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-
-        foreach (GameObject enemy in enemies)
-        {
-            enemy.GetComponent<Enemy>().Die();
-        }
-    }
-
-    public IEnumerator SpawnPortals()
-    {
-        MyTile tile;
-
-        for (int i = 0; i < _difficulty; i++)
-        {
-            do
-            {
-                int x = UnityEngine.Random.Range(0, grid.GetHeight());
-                int y = UnityEngine.Random.Range(0, grid.GetWidth());
-
-                tile = grid.GetTileAt(new Vector2(x, y));
-
-            } while (tile == null || tile.Occuped());
-
-            tile.CreatePortal();
-            yield return Utils.WaitForRealSeconds(1.0f);
-        }
-    }
-
-    public void KillPortals()
-    {
-        foreach (Portal portal in _portals)
-        {
-            portal.DestroyPortal();
-        }
-
-        _portals.Clear();
-    }
-
     public void AddPortal(Portal p)
     {
         _portals.Add(p);
@@ -234,11 +157,9 @@ public class LevelManager : Singleton<LevelManager>
         _portals.Remove(p);
     }
 
-    public Material GetMaterial(string color)
+    public int GetPortalsToLose()
     {
-        Material m = null;
-        colorMaterials.TryGetValue(color, out m);
-        return m;
+        return _portalsToLose;
     }
 
     public void DecrementPortalScore()
@@ -262,13 +183,59 @@ public class LevelManager : Singleton<LevelManager>
         }
     }
 
-    public int GetPortalsToLose()
-    {
-        return _portalsToLose;
-    }
-
     public void RestartGame()
     {
         SceneManager.LoadScene("Menu");
+    }
+
+    private void SpawnEnemies(bool b)
+    {
+        GameObject[] spawns = GameObject.FindGameObjectsWithTag("Spawn");
+
+        foreach (GameObject spawn in spawns)
+        {
+            spawn.GetComponent<Spawn>().SetEnabled(b);
+        }
+    }
+
+    private void KillEnemies()
+    {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+        foreach (GameObject enemy in enemies)
+        {
+            enemy.GetComponent<Enemy>().Die();
+        }
+    }
+
+    private IEnumerator SpawnPortals()
+    {
+        MyTile tile;
+
+        for (int i = 0; i < _difficulty; i++)
+        {
+            do
+            {
+                //TODO improve
+                int x = Random.Range(0, grid.GetHeight());
+                int y = Random.Range(0, grid.GetWidth());
+
+                tile = grid.GetTileAt(new Vector2(x, y));
+
+            } while (tile == null || tile.IsOccuped());
+
+            tile.CreatePortal();
+            yield return Utils.WaitForRealSeconds(1.0f);
+        }
+    }
+
+    private void KillPortals()
+    {
+        foreach (Portal portal in _portals)
+        {
+            portal.DestroyPortal();
+        }
+
+        _portals.Clear();
     }
 }

@@ -5,10 +5,7 @@ public class MyGrid : MonoBehaviour
 {
     [SerializeField]
     private GameObject hexPrefab;
-
-    [SerializeField]
-    private Material lineMaterial;
-
+    
     [SerializeField]
     private int gridWidth = 11;
 
@@ -17,10 +14,7 @@ public class MyGrid : MonoBehaviour
 
     [SerializeField]
     private float gap = 0.0f;
-
-    [SerializeField]
-    private bool borders = true;
-
+    
     private float hexWidth = 1.732f;
     private float hexHeight = 2.0f;
 
@@ -77,51 +71,23 @@ public class MyGrid : MonoBehaviour
                 GameObject hex = Instantiate(hexPrefab) as GameObject;
                 hex.GetComponent<MyTile>().x = x;
                 hex.GetComponent<MyTile>().y = y;
-
-
-                if (hex.GetComponent<MyTile>().y % 2 == 1)
-                {
-                    //hex.GetComponent<Renderer>().material.color = Color.black;
-                }
-
+                
                 Vector2 gridPos = new Vector2(x, y);
                 hex.transform.position = CalcWorldPos(gridPos);
                 hex.transform.parent = this.transform;
                 hex.name = "Hexagon" + x + "|" + y;
-
-
-                if (borders)
-                {
-                    hex.AddComponent<LineRenderer>();
-                    LineRenderer lines = hex.GetComponent<LineRenderer>();
-                    lines.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
-                    lines.receiveShadows = false;
-
-                    lines.startWidth = 0.1f;
-                    lines.endWidth = 0.1f;
-                    //lines.startColor = Color.black;
-                    //lines.endColor = Color.black;
-                    lines.material = lineMaterial;
-
-                    lines.positionCount = 7;
-
-                    for (int vert = 0; vert <= 6; vert++)
-                        lines.SetPosition(vert, MyTile.Corner(hex.transform.position, 1f - 0.08f, vert));
-                }
-
-
+                
                 tileGrid[x, y] = hex.GetComponent<MyTile>();
             }
         }
     }
 
-    public void FindNeighbours(MyTile tile)
+    public void BlockNeighbours(MyTile tile)
     {
         Vector2[] oddrDirectionsEven = { new Vector2(+1,  0), new Vector2( 0, -1), new Vector2(-1, -1),
                                          new Vector2(-1,  0), new Vector2(-1, +1), new Vector2( 0, +1)
                                        };
-
-
+        
         Vector2[] oddrDirectionsOdd = { new Vector2(+1,  0), new Vector2(+1, -1), new Vector2( 0, -1),
                                          new Vector2(-1,  0), new Vector2( 0, +1), new Vector2(+1, +1)
                                        };
@@ -137,10 +103,9 @@ public class MyGrid : MonoBehaviour
                     auxy >= 0 && auxy < gridHeight &&
                     tileGrid[auxx, auxy] != null)
                 {
-                    Destroy(tileGrid[auxx, auxy].gameObject);
+                    tileGrid[auxx, auxy].SetOccuped(true);
                 }
             }
-            //Destroy(tileGrid[tile.x, tile.y].gameObject);
         }
         else
         {
@@ -153,10 +118,9 @@ public class MyGrid : MonoBehaviour
                     auxy >= 0 && auxy < gridHeight &&
                     tileGrid[auxx, auxy] != null)
                 {
-                    Destroy(tileGrid[auxx, auxy].gameObject);
+                    tileGrid[auxx, auxy].SetOccuped(true);
                 }
             }
-            //Destroy(tileGrid[tile.x, tile.y].gameObject);
         }
     }
 

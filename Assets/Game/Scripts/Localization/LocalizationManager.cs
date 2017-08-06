@@ -8,14 +8,10 @@ public class LocalizationManager : Singleton<LocalizationManager>
     public class FontData
     {
         public GameData.Languages name = GameData.Languages.English;
-        public Font font;
-        public Material fontMaterial;
         public TextAsset localizations;
     }
 
     public List<FontData> font;
-    private int[] m_langIndexs;
-    private int m_keyIndex;
 
     private Dictionary<string, string> m_localization;
     private List<Dictionary<string, string>> m_localizations;
@@ -43,22 +39,6 @@ public class LocalizationManager : Singleton<LocalizationManager>
         }
 
         return key;
-    }
-
-    public Font GetFont()
-    {
-        if (currentFont == -1)
-            return null;
-
-        return font[currentFont].font;
-    }
-
-    public Material GetFontMaterial()
-    {
-        if (currentFont == -1)
-            return null;
-
-        return font[currentFont].fontMaterial;
     }
 
     public void RestartLabelLists()
@@ -111,8 +91,6 @@ public class LocalizationManager : Singleton<LocalizationManager>
 
     private void LoadLanguage(GameData.Languages newLanguage)
     {
-        //m_localization.Clear();
-
         if (m_localizations == null)
             ReadLocalizations();
 
@@ -126,11 +104,7 @@ public class LocalizationManager : Singleton<LocalizationManager>
         foreach (FontData fontData in font)
         {
             TextAsset textAsset = fontData.localizations;
-
-            TinyTsvReader tsvDoc = new TinyTsvReader(textAsset.text);
-            if (tsvDoc == null)
-                return;
-
+            
             Dictionary<string, string> localizationAux = new Dictionary<string, string>();
 
             string fs = textAsset.text;
@@ -142,10 +116,17 @@ public class LocalizationManager : Singleton<LocalizationManager>
                 string[] values = Regex.Split(valueLine, " = ");
 
                 string s;
+
                 if (!localizationAux.TryGetValue(values[0], out s))
-                    localizationAux.Add(values[0], values[1]);
+                {
+                    //Top replace \n chars
+                    s = Regex.Unescape(values[1]);
+                    localizationAux.Add(values[0], s);
+                }
                 else
+                {
                     Debug.Log("Duplicated key! " + values[0]);
+                }
             }
             m_localizations.Add(localizationAux);
         }

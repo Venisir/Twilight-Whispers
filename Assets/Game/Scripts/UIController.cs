@@ -90,6 +90,14 @@ public class UIController : Singleton<UIController>
             sb.SetPaused(b);
     }
 
+    public void GameOver()
+    {
+        _finished = true;
+        _timer.text = LocalizationManager.Instance.GetText("_YOU_LOSE");
+
+        _exitButton.gameObject.SetActive(true);
+    }
+
     private IEnumerator ShowTutorial()
     {
         _tutorial.gameObject.SetActive(true);
@@ -100,13 +108,5 @@ public class UIController : Singleton<UIController>
 
         yield return new WaitForSeconds(6);
         _tutorial.gameObject.SetActive(false);
-    }
-
-    public void GameOver()
-    {
-        _finished = true;
-        _timer.text = LocalizationManager.Instance.GetText("_YOU_LOSE");
-
-        _exitButton.gameObject.SetActive(true);
     }
 }

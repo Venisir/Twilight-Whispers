@@ -87,7 +87,9 @@ public class Pool
 
         if (instance == null)
         {
+#if UNITY_EDITOR
             Debug.Log("On demand instance: " + prefab.name);
+#endif
             instance = CreateInstance();
         }
 

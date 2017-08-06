@@ -4,12 +4,12 @@
     {
         English = 0,
         Spanish = 1,
+        Japanese = 2,
         italian,
         german,
         french,
         korean,
         chinese,
-        japanese,
         russian,
         portuguese
     }

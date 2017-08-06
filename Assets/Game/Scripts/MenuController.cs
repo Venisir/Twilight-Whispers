@@ -43,4 +43,9 @@ public class MenuController : MonoBehaviour
     {
         Application.Quit();
     }
+
+    public void SetLanguage(int i)
+    {
+        LocalizationManager.Instance.ChangeLanguage((GameData.Languages)i);
+    }
 }

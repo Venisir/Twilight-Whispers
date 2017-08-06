@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PortalCollider : MonoBehaviour
 {
@@ -11,12 +9,7 @@ public class PortalCollider : MonoBehaviour
     {
         parent = transform.GetComponentInParent<Portal>();
     }
-
-    void Update()
-    {
-
-    }
-
+    
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Enemy")

@@ -1,0 +1,18 @@
+﻿_TIME_TO_DAY = 日
+_TIME_TO_NIGHT = 夜
+_TUTORIAL_1 = あなたのポータルを守れ！フライアウトから日中の塔を配置します。
+_TUTORIAL_2 = マウスの右ボタン<color=#4f92ff>で呪文</color>を唱えます。 夜の生き物は、{0}件のポータルに到達するために聞かせてはいけません！
+_TITLE = 夕暮れ\n散歩
+_CREDITS_TEXT = 夕暮れ\n散歩\n\nアルベルト・サリエット\n\nTFGプロジェクト\\n\nウェブサイトとポートフォリオ\nalbertosalieto.es
+_BACK = 戻ります
+_LOADING = 読み込んでいます...
+_QUIT = 出口
+_START_GAME = プレイ
+_CREDITS = クレジット
+_YOU_LOSE = あなたが尋ねました！
+_PORTALS = ポータル
+_WAVES = フラッシュし
+_RESTART = リセット
+_SPANISH = スペイン
+_ENGLISH = 英語
+_JAPANESE = 日本の

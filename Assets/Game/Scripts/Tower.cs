@@ -36,8 +36,7 @@ public class Tower : MonoBehaviour
     private List<Enemy> _enemies;
     private AudioSource _audioSource;
     private float _currentAttackDelay;
-
-    // Use this for initialization
+    
     void Start()
     {
         _enemies = new List<Enemy>();
@@ -46,8 +45,7 @@ public class Tower : MonoBehaviour
 
         m_radiusZone.SetRadius(_radius);
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
         _currentAttackDelay -= Time.deltaTime;
@@ -58,7 +56,6 @@ public class Tower : MonoBehaviour
 
             if (_enemies.Count > 0)
             {
-                Debug.Log("TowerAttack " + _enemies[0]);
                 _currentAttackDelay = _attackDelay;
                 Shoot();
             }
@@ -80,7 +77,6 @@ public class Tower : MonoBehaviour
         switch (_type)
         {
             case (GameData.Towers.Laser):
-
                 _audioSource.Play();
                 m_laser.transform.LookAt(_enemies[0].gameObject.transform.position, Vector3.back);
                 m_laser.Play();
@@ -91,9 +87,7 @@ public class Tower : MonoBehaviour
                 break;
 
             default:
-
                 _audioSource.Play();
-                //GameObject bulletGO = Instantiate(m_bullet) as GameObject;
                 GameObject bulletGO = PoolManager.Spawn(m_bullet);
 
                 Bullet bullet = bulletGO.GetComponent<Bullet>();

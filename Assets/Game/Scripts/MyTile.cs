@@ -3,28 +3,13 @@
 public class MyTile : MonoBehaviour
 {
     [SerializeField]
-    private GameObject bulletTowerPrefab;
-
-    [SerializeField]
-    private GameObject laserTowerPrefab;
-
-    [SerializeField]
     private GameObject portalPrefab;
 
+    private bool _occuped = false;
     private Tower _tower = null;
     private Portal _portal = null;
     public int y, x;
-
-    void Start()
-    {
-
-    }
-
-    void Update()
-    {
-
-    }
-
+    
     public static Vector3 Corner(Vector3 origin, float radius, int corner)
     {
         float angle = 60 * corner;
@@ -43,6 +28,8 @@ public class MyTile : MonoBehaviour
         hex.transform.localPosition = Vector3.zero;
 
         _tower = tower.GetComponent<Tower>();
+
+        LevelManager.Instance.GetGrid().BlockNeighbours(this);
     }
 
     public void CreatePortal()
@@ -55,8 +42,13 @@ public class MyTile : MonoBehaviour
         LevelManager.Instance.AddPortal(_portal);
     }
 
-    public bool Occuped()
+    public bool IsOccuped()
     {
-        return !(_tower == null && _portal == null);
+        return !(_tower == null && _portal == null && _occuped == false);
+    }
+
+    public void SetOccuped(bool b)
+    {
+        _occuped = b;
     }
 }

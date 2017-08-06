@@ -2,8 +2,19 @@
 
 public class InvisibleTower : MonoBehaviour
 {
-    private RaycastHit m_HitInfo = new RaycastHit();
+    [SerializeField]
+    private MeshRenderer _currentMesh;
 
+    [SerializeField]
+    private Material _availableMaterial;
+
+    [SerializeField]
+    private Material _blockedMaterial;
+
+    //0: available
+    //1: blocked
+    private int _currentState = 0; 
+    private RaycastHit m_HitInfo = new RaycastHit();
     private GameData.Towers _type;
 
     void Start()
@@ -21,14 +32,31 @@ public class InvisibleTower : MonoBehaviour
             {
                 this.transform.position = tile.transform.position;
 
-                if (Input.GetMouseButtonDown(0))
+                if (tile.IsOccuped())
                 {
-                    if (!tile.Occuped())
+                    //Red Material
+                    if (_currentState == 0)
+                    {
+                        _currentState = 1;
+                        _currentMesh.material = _blockedMaterial;
+                    }
+                }
+                else
+                {
+                    //Blue material
+                    if (_currentState == 1)
+                    {
+                        _currentState = 0;
+                        _currentMesh.material = _availableMaterial;
+                    }
+
+                    if (Input.GetMouseButtonDown(0))
                     {
                         UIController.Instance.SetPauseButtons(false);
                         tile.CreateTower(TowerManager.Instance.GetTower(_type));
-                        
+
                         Destroy(this.gameObject);
+                        return;
                     }
                 }
             }

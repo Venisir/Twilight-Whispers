@@ -1,5 +1,18 @@
-_TIME_TO_DAY = Dia en
+﻿_TIME_TO_DAY = Día en
 _TIME_TO_NIGHT = Noche en
-_FALLEN_PORTALS = Portales restantes
-_TUTORIAL_1 = �Defiende tus <color=#4f92ff>portales</color>! Coloca torres durante el dia desde el menu <color=#4f92ff>lateral</color>.
-_TUTORIAL_2 = Lanza hechizos con el boton derecho del <color=#4f92ff>raton</color>. �No dejes que los seres de la noche alcancen <color=#4f92ff>{0}</color> portales!
+_TUTORIAL_1 = ¡Defiende tus <color=#4f92ff>portales</color>! Coloca torres durante el día desde el menú <color=#4f92ff>lateral</color>.
+_TUTORIAL_2 = Lanza hechizos con el botón derecho del <color=#4f92ff>ratón</color>. ¡No dejes que los seres de la noche alcancen <color=#4f92ff>{0}</color> portales!
+_TITLE = Twilight\nWhispers
+_CREDITS_TEXT = Twilight\nWhispers\n\nCreado por Alberto Salieto\n\nTFG project\n\nWebsite & portfolio\nalbertosalieto.es
+_BACK = Volver
+_LOADING = Cargando...
+_QUIT = Salir
+_START_GAME = Jugar
+_CREDITS = Créditos
+_YOU_LOSE = ¡Has pedido!
+_PORTALS = Portales
+_WAVES = Oleadas
+_RESTART = Reiniciar
+_SPANISH = Español
+_ENGLISH = Inglés
+_JAPANESE = Japonés

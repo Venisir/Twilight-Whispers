@@ -1,14 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
     [SerializeField]
     private List<GameObject> players;
-
-    // [SerializeField]
-    // private List<GameObject> objectsList = new List<GameObject>();
 
     [SerializeField]
     private float cameraSpeed = 0.02f;
@@ -24,26 +20,21 @@ public class CameraController : MonoBehaviour
 
     [SerializeField]
     private float elevationY = 1.0f;
-    
+
     //Limites de los bordes de la pantalla
     private float leftBound = 0;
     private float rightBound = 0;
     private float topBound = 0;
     private float bottomBound = 0;
-    
+
     private Vector2 cameraCenter;
     private Vector3 cameraPosition;
 
     private float zoom = 1.0f;
-    
+
     void Start()
     {
         this.transform.Rotate(new Vector3(cameraAngle, 0, 0));
-    }
-    
-    void Update()
-    {
-
     }
 
     void FixedUpdate()
@@ -53,34 +44,6 @@ public class CameraController : MonoBehaviour
         rightBound = players[0].transform.position.x;
         topBound = players[0].transform.position.z;
         bottomBound = players[0].transform.position.z;
-
-        // leftBound = objectsList[0].transform.position.x;
-        // rightBound = objectsList[0].transform.position.x;
-        // topBound = objectsList[0].transform.position.z;
-        // bottomBound = objectsList[0].transform.position.z;
-
-        //Y se compara con el resto de jugadores
-        //Si alguno se aleja del centro, expande el borde
-
-        // foreach (GameObject player in players)
-        // {
-        //     if (player.transform.position.x < leftBound)
-        //     {
-        //         leftBound = player.transform.position.x;
-        //     }
-        //     if (player.transform.position.x > rightBound)
-        //     {
-        //         rightBound = player.transform.position.x;
-        //     }
-        //     if (player.transform.position.z > topBound)
-        //     {
-        //         topBound = player.transform.position.z;
-        //     }
-        //     if (player.transform.position.z < bottomBound)
-        //     {
-        //         bottomBound = player.transform.position.z;
-        //     }
-        // }
 
         //Calculando el centro de la camara
         cameraCenter = new Vector2(((rightBound + leftBound) / 2), ((topBound + bottomBound) / 2));
