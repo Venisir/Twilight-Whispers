@@ -58,6 +58,8 @@ public class Spell : MonoBehaviour
     {
         if (other.tag == "Enemy")
         {
+            LevelManager.Instance.GetPlayer().AddMana(10);
+
             other.GetComponent<Enemy>().Damage(_damage);
 
             _particles.transform.parent = null;

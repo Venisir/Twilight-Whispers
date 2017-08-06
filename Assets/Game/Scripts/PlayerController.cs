@@ -8,8 +8,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float _speed = 1.0f;
 
+    //TODO
     [SerializeField]
     private float _hp = 100.0f;
+    
+    [SerializeField]
+    private float _manaGenerationMultiplier = 1f;
 
     [SerializeField]
     private float _attackDelay = 0.5f;
@@ -35,6 +39,7 @@ public class PlayerController : MonoBehaviour
     [NonSerialized]
     private GameData.PlayerStates _state;
 
+    private float _mana = 0f;
     private float _currentAttackDelay;
     private bool _movementEnabled;
     private Rigidbody _rigibody;
@@ -57,6 +62,8 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        AddMana((Time.deltaTime * _manaGenerationMultiplier));
+
         if (!_movementEnabled)
             return;
 
@@ -148,7 +155,18 @@ public class PlayerController : MonoBehaviour
 
     public void PlayMeteorSwarm()
     {
-        StartCoroutine(MeteorSwarm());
+        if (_mana >= 100f)
+        {
+            StartCoroutine(MeteorSwarm());
+            _mana = 0;
+            UIController.Instance.SetMana(_mana);
+        }
+    }
+
+    public void AddMana(float f)
+    {
+        _mana = Mathf.Clamp(_mana + f, 0f, 100f);
+        UIController.Instance.SetMana(_mana);
     }
 
     private IEnumerator MeteorSwarm()

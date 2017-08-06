@@ -18,10 +18,23 @@ public class UIController : Singleton<UIController>
     private Text _waves;
 
     [SerializeField]
+    private Slider _manaSlider;
+
+    [SerializeField]
     private List<SpawnButton> _towerButtons;
+
+    [SerializeField]
+    private Image _meteorImage;
+
+    [SerializeField]
+    private Sprite _meteorEnabled;
+
+    [SerializeField]
+    private Sprite _meteorDisabled;
 
     private void Start()
     {
+        SetMana(0);
         StartCoroutine(ShowTutorial());
     }
 
@@ -31,6 +44,19 @@ public class UIController : Singleton<UIController>
             _timer.text = LocalizationManager.Instance.GetText("_TIME_TO_NIGHT") + ": " + Utils.TimeFormattedStringFromSeconds(LevelManager.Instance.RemainingTime());
         else
             _timer.text = LocalizationManager.Instance.GetText("_TIME_TO_DAY") + ": " + Utils.TimeFormattedStringFromSeconds(LevelManager.Instance.RemainingTime());
+    }
+
+    public void SetMana(float mana)
+    {
+        if (mana >= 100 && _manaSlider.value < 1)
+        {
+            _meteorImage.sprite = _meteorEnabled;
+        }
+        else if (mana == 0)
+        {
+            _meteorImage.sprite = _meteorDisabled;
+        }
+        _manaSlider.value = mana/100;
     }
 
     public void SetRemainingPortals(int score)

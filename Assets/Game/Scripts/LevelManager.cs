@@ -141,6 +141,11 @@ public class LevelManager : Singleton<LevelManager>
             _sun.intensity = 1 - (_timer / ((_day ? _dayTime : _nightTime) - 0));
     }
 
+    public PlayerController GetPlayer()
+    {
+        return player1;
+    }
+
     public bool IsDay()
     {
         return _day;
