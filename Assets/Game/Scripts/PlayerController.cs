@@ -197,4 +197,11 @@ public class PlayerController : MonoBehaviour
     {
         _asdwMovement = !_asdwMovement;
     }
+
+    public void Die()
+    {
+        _movementEnabled = false;
+        UIController.Instance.SetPauseButtons(true);
+        _animation.CrossFade("Die " + UnityEngine.Random.Range(1, 2));
+    }
 }

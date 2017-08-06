@@ -9,6 +9,9 @@ public class MenuController : MonoBehaviour
     [SerializeField]
     private GameObject _menuPanel;
 
+    [SerializeField]
+    private GameObject _loadingPanel;
+
     void Start()
     {
         AudioManager.Instance.EnableMenuMusic();
@@ -18,6 +21,7 @@ public class MenuController : MonoBehaviour
     public void StartGame()
     {
         AudioManager.Instance.EnableGameMusic();
+        _loadingPanel.SetActive(true);
         SceneManager.LoadScene("Game");
     }
 
@@ -25,12 +29,14 @@ public class MenuController : MonoBehaviour
     {
         _creditsPanel.SetActive(true);
         _menuPanel.SetActive(false);
+        _loadingPanel.SetActive(false);
     }
 
     public void HideCredits()
     {
         _creditsPanel.SetActive(false);
         _menuPanel.SetActive(true);
+        _loadingPanel.SetActive(false);
     }
 
     public void QuitGame()

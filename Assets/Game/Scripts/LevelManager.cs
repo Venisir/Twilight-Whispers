@@ -35,6 +35,7 @@ public class LevelManager : Singleton<LevelManager>
 
     private int _dayScore, _nightScore;
     private bool init;
+    private bool _finished = false;
 
     private RaycastHit m_HitInfo = new RaycastHit();
     private Dictionary<string, Material> colorMaterials;
@@ -75,6 +76,18 @@ public class LevelManager : Singleton<LevelManager>
 
     private void Update()
     {
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            //Game Over
+            _finished = true;
+            player1.Die();
+
+            UIController.Instance.GameOver();
+        }
+
+        if (_finished)
+            return;
+
         if (!init)
         {
             StartCoroutine(SpawnPortals());
@@ -236,9 +249,11 @@ public class LevelManager : Singleton<LevelManager>
 
         if (_portalsToLose <= 0)
         {
-            //TODO
             //Game Over
-            //UIController.Instance.SetRemainingPortals(LocalizationManager.Instance.GetText("_YOU_LOSE"));
+            _finished = true;
+            player1.Die();
+
+            UIController.Instance.GameOver();
         }
 
         if (_portals.Count == 0)
@@ -250,5 +265,10 @@ public class LevelManager : Singleton<LevelManager>
     public int GetPortalsToLose()
     {
         return _portalsToLose;
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene("Menu");
     }
 }

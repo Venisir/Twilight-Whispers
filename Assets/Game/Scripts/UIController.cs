@@ -32,18 +32,27 @@ public class UIController : Singleton<UIController>
     [SerializeField]
     private Sprite _meteorDisabled;
 
+    [SerializeField]
+    private Button _exitButton;
+
+    private bool _finished = false;
+
     private void Start()
     {
+        _exitButton.gameObject.SetActive(false);
         SetMana(0);
         StartCoroutine(ShowTutorial());
     }
 
     void Update()
     {
-        if (LevelManager.Instance.IsDay())
-            _timer.text = LocalizationManager.Instance.GetText("_TIME_TO_NIGHT") + ": " + Utils.TimeFormattedStringFromSeconds(LevelManager.Instance.RemainingTime());
-        else
-            _timer.text = LocalizationManager.Instance.GetText("_TIME_TO_DAY") + ": " + Utils.TimeFormattedStringFromSeconds(LevelManager.Instance.RemainingTime());
+        if (!_finished)
+        {
+            if (LevelManager.Instance.IsDay())
+                _timer.text = LocalizationManager.Instance.GetText("_TIME_TO_NIGHT") + ": " + Utils.TimeFormattedStringFromSeconds(LevelManager.Instance.RemainingTime());
+            else
+                _timer.text = LocalizationManager.Instance.GetText("_TIME_TO_DAY") + ": " + Utils.TimeFormattedStringFromSeconds(LevelManager.Instance.RemainingTime());
+        }
     }
 
     public void SetMana(float mana)
@@ -56,7 +65,7 @@ public class UIController : Singleton<UIController>
         {
             _meteorImage.sprite = _meteorDisabled;
         }
-        _manaSlider.value = mana/100;
+        _manaSlider.value = mana / 100;
     }
 
     public void SetRemainingPortals(int score)
@@ -91,5 +100,13 @@ public class UIController : Singleton<UIController>
 
         yield return new WaitForSeconds(6);
         _tutorial.gameObject.SetActive(false);
+    }
+
+    public void GameOver()
+    {
+        _finished = true;
+        _timer.text = LocalizationManager.Instance.GetText("_YOU_LOSE");
+
+        _exitButton.gameObject.SetActive(true);
     }
 }
