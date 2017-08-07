@@ -1,7 +1,7 @@
 ﻿_TIME_TO_DAY = Day in
 _TIME_TO_NIGHT = Night in
 _TUTORIAL_1 = Defend your <color=#4f92ff>portals</color>! Place torrets during day from the <color=#4f92ff>lateral</color> menu.
-_TUTORIAL_2 = Cast spells with the right color=#4f92ff>mouse button</color>. Don't let the beings of the night reach {0} portals!
+_TUTORIAL_2 = Cast spells with the right <color=#4f92ff>mouse button</color>. Don't let the beings of the night reach {0} portals!
 _TITLE = Twilight\nWhispers
 _CREDITS_TEXT = Twilight\nWhispers\n\nCreated by Alberto Salieto\n\nTFG project\n\nWebsite & portfolio\nalbertosalieto.es
 _BACK = Back
