@@ -9,7 +9,7 @@ public class MyTile : MonoBehaviour
     private Tower _tower = null;
     private Portal _portal = null;
     public int y, x;
-    
+
     public static Vector3 Corner(Vector3 origin, float radius, int corner)
     {
         float angle = 60 * corner;

@@ -83,12 +83,6 @@ public class LevelManager : Singleton<LevelManager>
             else
                 _nightScore++;
             
-            // Fin del día o noche
-            if (_day)
-            {
-
-            }
-
             if (!_day)
             {
                 SpawnEnemies(false);
@@ -96,15 +90,13 @@ public class LevelManager : Singleton<LevelManager>
                 KillPortals();
                 UIController.Instance.SetWaves(_nightScore);
             }
-
-            // Comienzo del nuevo timer
+            
             _day = !_day;
             _timer = _day ? _dayTime : _nightTime;
 
             if (_day)
             {
                 StartCoroutine(SpawnPortals());
-                //TowerTime
                 UIController.Instance.SetButtons(true);
             }
 
@@ -112,7 +104,6 @@ public class LevelManager : Singleton<LevelManager>
             {
                 UIController.Instance.SetButtons(false);
                 SpawnEnemies(true);
-                //Fight
             }
         }
         
